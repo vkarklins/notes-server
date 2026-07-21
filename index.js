@@ -18,7 +18,7 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(requestLogger);
-app.use(unknownEndpoint);
+
 
 let contacts = [
   {
@@ -95,7 +95,13 @@ app.post('/api/persons', (request, response) => {
   return response.status(204).end();
 });
 
+app.use(unknownEndpoint);
+
 const PORT = process.env.PORT || 3001;
-app.listen(PORT), () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-};
+});
+
+server.on('error', (err) => {
+  console.error('Failed to start server:', err);
+})
